@@ -250,7 +250,6 @@ export LIBGL_ALWAYS_INDIRECT=0
       echo $WARNING_LINE 'fcitx setting is already written in .profile'
 
     else
-
       cat >>~/.profile <<-EOF
 
 # fcitx setting. written by setup.sh
@@ -261,13 +260,9 @@ export XMODIFIERS="@im=fcitx"
 export DefaultIMModule=fcitx
 
 			EOF
-
     fi
-
     sleep 1
-
     ;;
-
 esac
 
 echo $NOTE_LINE 'Install zsh'
