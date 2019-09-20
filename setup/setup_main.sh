@@ -288,19 +288,19 @@ fi
 
 sleep 1
 
-# echo $NOTE_LINE 'PATH settings'
+echo $NOTE_LINE 'PATH settings'
 
-# if echo $PATH | grep -e ~/.local/bin >/dev/null 2>&1; then
-#   :
-# elif cat ~/.bashrc | grep '# add ~/.local/bin to PATH (written by setup.sh)' >/dev/null 2>&1; then
-#   :
-# else
-#   echo add ~/.local/bin to PATH
-#   echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
-#   echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
-# fi
+if echo $PATH | grep -e ~/.local/bin >/dev/null 2>&1; then
+  :
+elif cat ~/.bashrc | grep '# add ~/.local/bin to PATH (written by setup.sh)' >/dev/null 2>&1; then
+  :
+else
+  echo add ~/.local/bin to PATH
+  echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
+  echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
+fi
 
-# sleep 1
+sleep 1
 
 echo $NOTE_LINE 'Final update...'
 sudo apt update
