@@ -190,7 +190,7 @@ else
 fi
 sleep 1
 
-source ~/.bashrc
+. ~/.bashrc
 
 echo $NOTE_LINE 'Install pipenv'
 pip install pipenv --user
