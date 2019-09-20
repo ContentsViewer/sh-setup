@@ -1,16 +1,15 @@
 #!/bin/sh
 
-
 # === Initialize shell environment ===================================
 set -u
 export LC_ALL=C
 type Command >/dev/null 2>&1 && type getconf >/dev/null 2>&1 &&
-export PATH="$(command -p getconf PATH)${PATH+:}${PATH-}"
-export UNIX_STD=2003  # to make HP-UX conform to POSIX
+  export PATH="$(command -p getconf PATH)${PATH+:}${PATH-}"
+export UNIX_STD=2003 # to make HP-UX conform to POSIX
 
 #
 
-print_usage_and_exit () {
+print_usage_and_exit() {
   cat <<-USAGE 1>&2
 	Usage: ${0##*/} [--wsl]
 	       --wsl ...  install gui environment for windows subsystem for Linux.
@@ -27,7 +26,8 @@ error_exit() {
 
 MY_DIR=$(pwd)
 
-LF=$(printf '\\\n_'); LF=${LF%_}
+LF=$(printf '\\\n_')
+LF=${LF%_}
 
 NOTE_LINE="\033[37;44m[NOTE] \033[m"
 WARNING_LINE="\033[37;43m[WARNING] \033[m"
@@ -37,27 +37,27 @@ ERROR_LINE="\033[37;41m[ERROR] \033[m"
 # Parse Arguments
 ######################################################################
 
-
 optwsl=0
 
 while [ $# -gt 0 ]; do
-  case $# in 0) break;; esac
+  case $# in 0) break ;; esac
 
   case $1 in
-    --wsl) optwsl=1; shift; continue;;
-    --help|--version|-h) print_usage_and_exit;;
-        *) print_usage_and_exit;;
+    --wsl)
+      optwsl=1
+      shift
+      continue
+      ;;
+    --help | --version | -h) print_usage_and_exit ;;
+    *) print_usage_and_exit ;;
   esac
 done
-
-
 
 ######################################################################
 # Main Routine
 ######################################################################
 
 echo "$NOTE_LINE MY_DIR=$MY_DIR"
-
 
 if [ "$(whoami)" = "root" ]; then
   echo "$WARNING_LINE You now have root privilage."
@@ -66,30 +66,30 @@ if [ "$(whoami)" = "root" ]; then
   while true; do
     yn=''
     printf "Are you sure to continue?[y/n]"
-    read  yn
+    read yn
     case $yn in
-      [Yy]) break;;
+      [Yy]) break ;;
 
-      [Nn]) exit 1;;
+      [Nn]) exit 1 ;;
 
-      *  ) echo "please input [y/n]"
+      *) echo "please input [y/n]" ;;
     esac
 
   done
 fi
 
-
-
-
 echo $NOTE_LINE 'Start setup'
 sleep 1
-
 
 sudo apt update
 sudo apt upgrade
 
 echo $NOTE_LINE 'Install build-essential'
 sudo apt install build-essential
+sleep 1
+
+echo $NOTE_LINE 'Install cmake'
+sudo apt install cmake
 sleep 1
 
 echo $NOTE_LINE 'Install vim'
@@ -104,16 +104,15 @@ echo $NOTE_LINE 'Install tree'
 sudo apt install tree
 sleep 1
 
-
 echo $NOTE_LINE 'Install tmux'
 sudo apt install tmux
-if [ -f ~/.tmux.conf ] ; then
+if [ -f ~/.tmux.conf ]; then
   echo $WARNING_LINE ".tmux.conf is already exist!"
   echo "$WARNING_LINE tmux settings will not be written!"
 else
   echo "$NOTE_LINE tmux settings will write in .tmux.conf"
   touch ~/.tmux.conf
-  cat > ~/.tmux.conf <<-EOF
+  cat >~/.tmux.conf <<-EOF
 # enable mouse operation
 set-option -g mouse on
 
@@ -127,20 +126,18 @@ bind-key -n WheelDownPane select-pane -t= \; send-keys -M
 fi
 sleep 1
 
-
 echo $NOTE_LINE 'Install htop'
 sudo apt install htop
 sleep 1
 
-
 echo $NOTE_LINE 'Install fzf'
-if type "fzf" > /dev/null 2>&1; then
+if type "fzf" >/dev/null 2>&1; then
   echo "$NOTE_LINE fzf is already installed."
 else
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install
 
-  cat >> ~/.fzf.bash <<-EOF
+  cat >>~/.fzf.bash <<-EOF
 
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
@@ -149,52 +146,45 @@ export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 fi
 sleep 1
 
-
-
-
 echo $NOTE_LINE 'Install python-dev'
 sudo apt install python3-dev
 sudo apt install python-dev
 
 sleep 1
 
-
 echo "$NOTE_LINE Install pyenv"
-if type "pyenv" > /dev/null 2>&1; then
+if type "pyenv" >/dev/null 2>&1; then
   echo "$NOTE_LINE pyenv is already installed."
 else
   git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-
 
   if cat ~/.bashrc | grep '# pyenv setting. written by setup.sh'; then
     echo $WARNING_LINE 'pyenv setting is already written in .bashrc'
     echo $WARNING_LINE 'pyenv setting will not written in .bashrc'
   else
-    echo '# pyenv setting. written by setup.sh' >> ~/.bashrc
-    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-    echo 'if command -v pyenv 1>/dev/null 2>&1; then' >> ~/.bashrc
-    echo '  eval "$(pyenv init -)"' >> ~/.bashrc
-    echo 'fi' >> ~/.bashrc
+    echo '# pyenv setting. written by setup.sh' >>~/.bashrc
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >>~/.bashrc
+    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >>~/.bashrc
+    echo 'if command -v pyenv 1>/dev/null 2>&1; then' >>~/.bashrc
+    echo '  eval "$(pyenv init -)"' >>~/.bashrc
+    echo 'fi' >>~/.bashrc
   fi
 fi
 
 sleep 1
 
 echo $NOTE_LINE 'Install pip'
-if type "pip" > /dev/null 2>&1; then
+if type "pip" >/dev/null 2>&1; then
   echo "$NOTE_LINE pip is already installed."
 else
   mkdir ~/.pip
   cd ~/.pip
   wget "https://bootstrap.pypa.io/get-pip.py"
 
-  sudo python get-pip.py
-  sudo python3 get-pip.py
+  python get-pip.py --user
+  python3 get-pip.py --user
 fi
 sleep 1
-
-
 
 echo $NOTE_LINE 'Install pipenv'
 pip install pipenv --user
@@ -202,7 +192,7 @@ pip install pipenv --user
 sleep 1
 
 echo $NOTE_LINE 'Install trash-cli'
-if type "trash-list" > /dev/null 2>&1; then
+if type "trash-list" >/dev/null 2>&1; then
   echo "$NOTE_LINE trash-cli already installed."
 else
   git clone https://github.com/andreafrancia/trash-cli.git ~/.trash-cli
@@ -211,9 +201,6 @@ else
 
 fi
 sleep 1
-
-
-
 
 case $optwsl in
   0) : ;;
@@ -224,17 +211,15 @@ case $optwsl in
     sudo apt install xfce4-terminal
     sleep 1
 
-
     echo "$NOTE_LINE Install xfce4-terminal"
     sudo apt install xfce4
-    
 
     if cat ~/.bashrc | grep '# xfce4 setting. written by setup.sh'; then
       echo $WARNING_LINE 'xfce4 setting is already written in .bashrc'
 
     else
 
-      cat >> ~/.bashrc <<-EOF
+      cat >>~/.bashrc <<-EOF
 
 # xfce4 setting. written by setup.sh
 export DISPLAY=:0.0
@@ -242,8 +227,8 @@ export LIBGL_ALWAYS_INDIRECT=0
 
 			EOF
 
-
     fi
+
     sleep 1
 
     echo "$NOTE_LINE Install windows font"
@@ -252,8 +237,6 @@ export LIBGL_ALWAYS_INDIRECT=0
     sudo fc-cache -fv
     sleep 1
 
-
-    
     echo "$NOTE_LINE Install fcitx"
     sudo apt -y install fcitx-mozc dbus-x11 x11-xserver-utils
 
@@ -262,7 +245,7 @@ export LIBGL_ALWAYS_INDIRECT=0
 
     else
 
-      cat >> ~/.profile <<-EOF
+      cat >>~/.profile <<-EOF
 
 # fcitx setting. written by setup.sh
 
@@ -273,36 +256,45 @@ export DefaultIMModule=fcitx
 
 			EOF
 
-
     fi
+
     sleep 1
 
+    ;;
 
-  ;;
 esac
-
-
 
 echo $NOTE_LINE 'Install zsh'
 
-if type "zsh" > /dev/null 2>&1; then
+if type "zsh" >/dev/null 2>&1; then
   echo "$NOTE_LINE zsh is already installed."
 else
   sudo apt install zsh
 
   # echo "$WARNING_LINE Now we be starting zsh. zsh will open install setup screen."
   # echo "$WARNING_LINE Please select q option - nothing to do!!"
-  
+
   # none=''
   # printf "Are input to continue?"
   # read  none
   $MY_DIR/setup_zsh.zsh
 fi
 
-
-
 sleep 1
 
+echo $NOTE_LINE 'PATH settings'
+
+if echo $PATH | grep -e ~/.local/bin >/dev/null 2>&1; then
+  :
+elif cat ~/.bashrc | grep '# add ~/.local/bin to PATH (written by setup.sh)' >/dev/null 2>&1; then
+  :
+else
+  echo add ~/.local/bin to PATH
+  echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
+  echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
+fi
+
+sleep 1
 
 echo $NOTE_LINE 'Final update...'
 sudo apt update

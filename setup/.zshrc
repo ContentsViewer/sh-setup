@@ -16,7 +16,6 @@ autoload -Uz promptinit
 promptinit
 prompt paradox
 
-
 #autoload -Uz vcs_info
 #precmd_vcs_info() { vcs_info }
 #precmd_functions+=( precmd_vcs_info )
@@ -30,6 +29,6 @@ prompt paradox
 #powerline-daemon -q
 #. ~/.local/lib/python3.5/site-packages/powerline/bindings/zsh/powerline.zsh
 
-#export TERM="xterm-256color" 
+#export TERM="xterm-256color"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
