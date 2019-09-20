@@ -177,6 +177,10 @@ echo $NOTE_LINE 'Install pip'
 if type "pip" >/dev/null 2>&1; then
   echo "$NOTE_LINE pip is already installed."
 else
+  echo add ~/.local/bin to PATH
+  echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
+  echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
+
   mkdir ~/.pip
   cd ~/.pip
   wget "https://bootstrap.pypa.io/get-pip.py"
@@ -185,6 +189,8 @@ else
   python3 get-pip.py --user
 fi
 sleep 1
+
+source ~/.bashrc
 
 echo $NOTE_LINE 'Install pipenv'
 pip install pipenv --user
@@ -282,19 +288,19 @@ fi
 
 sleep 1
 
-echo $NOTE_LINE 'PATH settings'
+# echo $NOTE_LINE 'PATH settings'
 
-if echo $PATH | grep -e ~/.local/bin >/dev/null 2>&1; then
-  :
-elif cat ~/.bashrc | grep '# add ~/.local/bin to PATH (written by setup.sh)' >/dev/null 2>&1; then
-  :
-else
-  echo add ~/.local/bin to PATH
-  echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
-  echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
-fi
+# if echo $PATH | grep -e ~/.local/bin >/dev/null 2>&1; then
+#   :
+# elif cat ~/.bashrc | grep '# add ~/.local/bin to PATH (written by setup.sh)' >/dev/null 2>&1; then
+#   :
+# else
+#   echo add ~/.local/bin to PATH
+#   echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
+#   echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
+# fi
 
-sleep 1
+# sleep 1
 
 echo $NOTE_LINE 'Final update...'
 sudo apt update
