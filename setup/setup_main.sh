@@ -86,6 +86,7 @@ sleep 1
 sudo apt update
 sudo apt upgrade
 
+# === Install Standard Apt ===========================================
 echo $NOTE_LINE 'Install build-essential'
 sudo apt install build-essential
 sleep 1
@@ -106,32 +107,21 @@ echo $NOTE_LINE 'Install tree'
 sudo apt install tree
 sleep 1
 
-echo $NOTE_LINE 'Install tmux'
-sudo apt install tmux
-if [ -f ~/.tmux.conf ]; then
-  echo $WARNING_LINE ".tmux.conf is already exist!"
-  echo "$WARNING_LINE tmux settings will not be written!"
-else
-  echo "$NOTE_LINE tmux settings will write in .tmux.conf"
-  touch ~/.tmux.conf
-  cat >~/.tmux.conf <<-EOF
-# enable mouse operation
-set-option -g mouse on
-
-# when scroll up then enter copy mode.
-bind-key -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'select-pane -t=; copy-mode -e; send-keys -M'"
-
-# full scroll down then break copy mode
-bind-key -n WheelDownPane select-pane -t= \; send-keys -M
-	EOF
-
-fi
-sleep 1
-
 echo $NOTE_LINE 'Install htop'
 sudo apt install htop
 sleep 1
 
+# === Install tmux ===================================================
+echo $NOTE_LINE 'Install tmux'
+if type "tmux" >/dev/null 2>&1; then
+  echo "$NOTE_LINE tmux is already installed."
+else
+  sudo apt install tmux
+  \cp -n $MY_DIR/.tmux.conf $HOME/.tmux.conf
+fi
+sleep 1
+
+# === Install fzf ====================================================
 echo $NOTE_LINE 'Install fzf'
 if type "fzf" >/dev/null 2>&1; then
   echo "$NOTE_LINE fzf is already installed."
@@ -148,6 +138,7 @@ export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 fi
 sleep 1
 
+# === Install python environment =====================================
 echo $NOTE_LINE 'Install python-dev'
 sudo apt install python3-dev
 sudo apt install python-dev
@@ -199,6 +190,7 @@ pip install pipenv --user
 
 sleep 1
 
+# === Install trash ==================================================
 echo $NOTE_LINE 'Install trash-cli'
 if type "trash-list" >/dev/null 2>&1; then
   echo "$NOTE_LINE trash-cli already installed."
@@ -210,6 +202,7 @@ else
 fi
 sleep 1
 
+# === WSL Option =====================================================
 case $optwsl in
   0) : ;;
   1)
@@ -226,7 +219,6 @@ case $optwsl in
       echo $WARNING_LINE 'xfce4 setting is already written in .bashrc'
 
     else
-
       cat >>~/.bashrc <<-EOF
 
 # xfce4 setting. written by setup.sh
@@ -234,7 +226,6 @@ export DISPLAY=:0.0
 export LIBGL_ALWAYS_INDIRECT=0
 
 			EOF
-
     fi
 
     sleep 1
@@ -267,6 +258,7 @@ export DefaultIMModule=fcitx
     ;;
 esac
 
+# === Install zsh ====================================================
 echo $NOTE_LINE 'Install zsh'
 
 if type "zsh" >/dev/null 2>&1; then
@@ -274,33 +266,15 @@ if type "zsh" >/dev/null 2>&1; then
 else
   sudo apt install zsh
 
-  # echo "$WARNING_LINE Now we be starting zsh. zsh will open install setup screen."
-  # echo "$WARNING_LINE Please select q option - nothing to do!!"
-
-  # none=''
-  # printf "Are input to continue?"
-  # read  none
   $MY_DIR/setup_zsh.zsh
+  
+  \cp -i $MY_DIR/.zshrc $HOME/.zshrc
+  \cp -i $MY_DIR/.zpreztorc $HOME/.zpreztorc
 fi
 
 sleep 1
-echo $NOTE_LINE 'dotfiles settings'
 
-mkdir -p $HOME/.dotfiles
-
-DOT_FILES='.zshrc .zpreztorc'
-echo $DOT_FILES | 
-awk '{
-  for (i=1;i<=NF;i++) print $i;
-}' | 
-while read file;do 
-  \cp -f $MY_DIR/$file $HOME/.dotfiles/$file
-  unlink $HOME/$file
-  ln -s $HOME/.dotfiles/$file $HOME/$file
-done;
-
-sleep 1
-
+# === PATH settings ==================================================
 echo $NOTE_LINE 'PATH settings'
 
 if echo $PATH | grep -e ~/.local/bin >/dev/null 2>&1; then
@@ -315,6 +289,7 @@ fi
 
 sleep 1
 
+# === Final stage ====================================================
 echo $NOTE_LINE 'Final update...'
 sudo apt update
 sudo apt upgrade
