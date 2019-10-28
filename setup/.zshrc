@@ -11,10 +11,9 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-
 autoload -Uz promptinit
 promptinit
-prompt paradox
+prompt damoekri
 
 #autoload -Uz vcs_info
 #precmd_vcs_info() { vcs_info }

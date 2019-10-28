@@ -24,7 +24,9 @@ error_exit() {
   exit $1
 }
 
-MY_DIR=$(pwd)
+# MY_DIR=$(pwd)
+# MY_DIR=$(dirname $0)
+MY_DIR=$(cd $(dirname $0); pwd)
 
 LF=$(printf '\\\n_')
 LF=${LF%_}
@@ -280,6 +282,22 @@ else
   # read  none
   $MY_DIR/setup_zsh.zsh
 fi
+
+sleep 1
+echo $NOTE_LINE 'dotfiles settings'
+
+mkdir -p $HOME/.dotfiles
+
+DOT_FILES='.zshrc .zpreztorc'
+echo $DOT_FILES | 
+awk '{
+  for (i=1;i<=NF;i++) print $i;
+}' | 
+while read file;do 
+  \cp -f $MY_DIR/$file $HOME/.dotfiles/$file
+  unlink $HOME/$file
+  ln -s $HOME/.dotfiles/$file $HOME/$file
+done;
 
 sleep 1
 
