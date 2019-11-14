@@ -26,7 +26,10 @@ error_exit() {
 
 # MY_DIR=$(pwd)
 # MY_DIR=$(dirname $0)
-MY_DIR=$(cd $(dirname $0); pwd)
+MY_DIR=$(
+  cd $(dirname $0)
+  pwd
+)
 
 LF=$(printf '\\\n_')
 LF=${LF%_}
@@ -111,6 +114,22 @@ echo $NOTE_LINE 'Install htop'
 sudo apt install htop
 sleep 1
 
+# === Install zsh ====================================================
+echo $NOTE_LINE 'Install zsh'
+
+if type "zsh" >/dev/null 2>&1; then
+  echo "$NOTE_LINE zsh is already installed."
+else
+  sudo apt install zsh
+
+  $MY_DIR/setup_zsh.zsh
+
+  \cp -i $MY_DIR/.zshrc $HOME/.zshrc
+  \cp -i $MY_DIR/.zpreztorc $HOME/.zpreztorc
+fi
+
+sleep 1
+
 # === Install tmux ===================================================
 echo $NOTE_LINE 'Install tmux'
 if type "tmux" >/dev/null 2>&1; then
@@ -135,6 +154,13 @@ export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 
 	EOF
+
+  cat >>~/.fzf.zsh <<-EOF
+
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+
+	EOF
 fi
 sleep 1
 
@@ -145,26 +171,26 @@ sudo apt install python-dev
 
 sleep 1
 
-echo "$NOTE_LINE Install pyenv"
-if type "pyenv" >/dev/null 2>&1; then
-  echo "$NOTE_LINE pyenv is already installed."
-else
-  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+# echo "$NOTE_LINE Install pyenv"
+# if type "pyenv" >/dev/null 2>&1; then
+#   echo "$NOTE_LINE pyenv is already installed."
+# else
+#   git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 
-  if cat ~/.bashrc | grep '# pyenv setting. written by setup.sh'; then
-    echo $WARNING_LINE 'pyenv setting is already written in .bashrc'
-    echo $WARNING_LINE 'pyenv setting will not written in .bashrc'
-  else
-    echo '# pyenv setting. written by setup.sh' >>~/.bashrc
-    echo 'export PYENV_ROOT="$HOME/.pyenv"' >>~/.bashrc
-    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >>~/.bashrc
-    echo 'if command -v pyenv 1>/dev/null 2>&1; then' >>~/.bashrc
-    echo '  eval "$(pyenv init -)"' >>~/.bashrc
-    echo 'fi' >>~/.bashrc
-  fi
-fi
+#   if cat ~/.bashrc | grep '# pyenv setting. written by setup.sh'; then
+#     echo $WARNING_LINE 'pyenv setting is already written in .bashrc'
+#     echo $WARNING_LINE 'pyenv setting will not written in .bashrc'
+#   else
+#     echo '# pyenv setting. written by setup.sh' >>~/.bashrc
+#     echo 'export PYENV_ROOT="$HOME/.pyenv"' >>~/.bashrc
+#     echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >>~/.bashrc
+#     echo 'if command -v pyenv 1>/dev/null 2>&1; then' >>~/.bashrc
+#     echo '  eval "$(pyenv init -)"' >>~/.bashrc
+#     echo 'fi' >>~/.bashrc
+#   fi
+# fi
 
-sleep 1
+# sleep 1
 
 echo $NOTE_LINE 'Install pip'
 if type "pip" >/dev/null 2>&1; then
@@ -258,22 +284,6 @@ export DefaultIMModule=fcitx
     ;;
 esac
 
-# === Install zsh ====================================================
-echo $NOTE_LINE 'Install zsh'
-
-if type "zsh" >/dev/null 2>&1; then
-  echo "$NOTE_LINE zsh is already installed."
-else
-  sudo apt install zsh
-
-  $MY_DIR/setup_zsh.zsh
-  
-  \cp -i $MY_DIR/.zshrc $HOME/.zshrc
-  \cp -i $MY_DIR/.zpreztorc $HOME/.zpreztorc
-fi
-
-sleep 1
-
 # === PATH settings ==================================================
 echo $NOTE_LINE 'PATH settings'
 
@@ -295,3 +305,4 @@ sudo apt update
 sudo apt upgrade
 
 echo "$NOTE_LINE All process done!"
+echo "$NOTE_LINE Please restart shell environment."
