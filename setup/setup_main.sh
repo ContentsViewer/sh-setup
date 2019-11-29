@@ -197,7 +197,7 @@ if type "pip" >/dev/null 2>&1; then
   echo "$NOTE_LINE pip is already installed."
 else
   echo add ~/.local/bin to PATH
-  echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
+  # echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
   echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
 
   mkdir ~/.pip
@@ -284,20 +284,20 @@ export DefaultIMModule=fcitx
     ;;
 esac
 
-# === PATH settings ==================================================
-echo $NOTE_LINE 'PATH settings'
+# # === PATH settings ==================================================
+# echo $NOTE_LINE 'PATH settings'
 
-if echo $PATH | grep -e ~/.local/bin >/dev/null 2>&1; then
-  :
-elif cat ~/.bashrc | grep '# add ~/.local/bin to PATH (written by setup.sh)' >/dev/null 2>&1; then
-  :
-else
-  echo add ~/.local/bin to PATH
-  echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
-  echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
-fi
+# if echo $PATH | grep -e ~/.local/bin >/dev/null 2>&1; then
+#   :
+# elif cat ~/.bashrc | grep '# add ~/.local/bin to PATH (written by setup.sh)' >/dev/null 2>&1; then
+#   :
+# else
+#   echo add ~/.local/bin to PATH
+#   echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
+#   echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
+# fi
 
-sleep 1
+# sleep 1
 
 # === Final stage ====================================================
 echo $NOTE_LINE 'Final update...'
