@@ -124,8 +124,8 @@ else
 
   $MY_DIR/setup_zsh.zsh
 
-  \cp -i $MY_DIR/.zshrc $HOME/.zshrc
-  \cp -i $MY_DIR/.zpreztorc $HOME/.zpreztorc
+  \cp -f $MY_DIR/.zshrc $HOME/.zshrc
+  \cp -f $MY_DIR/.zpreztorc $HOME/.zpreztorc
 fi
 
 sleep 1
@@ -199,6 +199,7 @@ else
   echo add ~/.local/bin to PATH
   # echo '# add ~/.local/bin to PATH (written by setup.sh)' >>~/.bashrc
   echo 'export PATH=~/.local/bin:$PATH' >>~/.bashrc
+  PATH=~/.local/bin:$PATH
 
   mkdir ~/.pip
   cd ~/.pip
@@ -209,7 +210,7 @@ else
 fi
 sleep 1
 
-. ~/.bashrc
+# . ~/.bashrc
 
 echo $NOTE_LINE 'Install pipenv'
 pip install pipenv --user
