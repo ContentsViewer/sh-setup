@@ -7,22 +7,18 @@ type Command >/dev/null 2>&1 && type getconf >/dev/null 2>&1 &&
   export PATH="$(command -p getconf PATH)${PATH+:}${PATH-}"
 export UNIX_STD=2003 # to make HP-UX conform to POSIX
 
-#
+VERSION='2.0.0'
 
-print_usage_and_exit() {
-  cat <<-USAGE 1>&2
-	Usage: ${0##*/} [--wsl]
-	       --wsl ...  install gui environment for windows subsystem for Linux.
-	          
-	Version : 2018-11-02 02:39:39 JST
-	USAGE
-  exit 1
-}
+usage="
+Usage: ${0##*/} [options]
 
-error_exit() {
-  ${2+:} false && echo "${0##*/}: $2" 1>&2
-  exit $1
-}
+Options:
+ --wsl       install gui environment for windows subsystem for Linux.
+ -h, --help  display this help and exit
+
+Version:
+ $VERSION
+"
 
 # MY_DIR=$(pwd)
 # MY_DIR=$(dirname $0)
@@ -37,6 +33,16 @@ LF=${LF%_}
 NOTE_LINE="\033[37;44m[NOTE] \033[m"
 WARNING_LINE="\033[37;43m[WARNING] \033[m"
 ERROR_LINE="\033[37;41m[ERROR] \033[m"
+
+print_usage_and_exit() {
+  echo "$usage" 1>&2
+  exit 1
+}
+
+error_exit() {
+  ${2+:} false && echo "${0##*/}: $2" 1>&2
+  exit $1
+}
 
 ######################################################################
 # Parse Arguments
