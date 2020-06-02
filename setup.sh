@@ -132,8 +132,8 @@ if type "zsh" >/dev/null 2>&1; then
 else
   sudo apt install zsh
 
-  chomod 755 ${MY_DIR}/${SRC_DIR}/.setup.zsh
-  ${MY_DIR}/${SRC_DIR}/.setup.zsh
+  chmod 755 ${MY_DIR}/${SRC_DIR}/setup.zsh
+  ${MY_DIR}/${SRC_DIR}/setup.zsh
 
   \cp -f ${MY_DIR}/${SRC_DIR}/.zshrc ${HOME}/.zshrc
   \cp -f ${MY_DIR}/${SRC_DIR}/.zpreztorc ${HOME}/.zpreztorc
