@@ -62,7 +62,7 @@ while [ $# -gt 0 ]; do
       exit
       ;;
     -V | --version)
-      echo "$version"
+      echo "$VERSION"
       exit
       ;;
     *)
