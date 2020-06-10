@@ -7,7 +7,7 @@ type Command >/dev/null 2>&1 && type getconf >/dev/null 2>&1 &&
   export PATH="$(command -p getconf PATH)${PATH+:}${PATH-}"
 export UNIX_STD=2003 # to make HP-UX conform to POSIX
 
-VERSION='2.0.0'
+VERSION='2020.06.10'
 
 usage="
 Usage: ${0##*/} [options]
