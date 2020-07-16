@@ -26,7 +26,7 @@ $ ./setup.sh ---wsl
 ## Update
 You can re-run this script.
 
-At 2 or more, this script updates all packages.
+At 2 or more time, this script will update all packages.
 
 ## Packages
 This script will add these packages.
