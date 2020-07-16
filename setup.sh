@@ -142,12 +142,8 @@ sleep 1
 
 # === Install tmux ===================================================
 print_note 'Install tmux'
-if type "tmux" >/dev/null 2>&1; then
-  print_warning 'tmux is already installed.'
-else
-  sudo apt install tmux
-  \cp -n ${MY_DIR}/.tmux.conf ${HOME}/.tmux.conf
-fi
+sudo apt install tmux
+\cp -n ${MY_DIR}/${SRC_DIR}/.tmux.conf ${HOME}/.tmux.conf
 sleep 1
 
 # === Install fzf ====================================================
