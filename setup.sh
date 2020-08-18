@@ -226,7 +226,8 @@ sleep 1
     cat >>${HOME}/.bashrc <<EOS
 
 # xfce4 setting. written by setup.sh
-export DISPLAY=:0.0
+export DISPLAY=:0.0 # if you use wsl1, activate this line.
+# export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0 # if you use wsl2, activate this line.
 export LIBGL_ALWAYS_INDIRECT=0
 
 EOS
