@@ -173,20 +173,20 @@ sudo apt install python3-dev
 sudo apt install python-dev
 sleep 1
 
-print_note 'Install pyenv'
-if type "pyenv" >/dev/null 2>&1; then
-  print_note 'pyenv is already installed.'
-else
-  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+# print_note 'Install pyenv'
+# if type "pyenv" >/dev/null 2>&1; then
+#   print_note 'pyenv is already installed.'
+# else
+#   git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 
-  echo '# pyenv setting. written by setup.sh' >>~/.bashrc
-  echo 'export PYENV_ROOT="$HOME/.pyenv"' >>~/.bashrc
-  echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >>~/.bashrc
-  echo 'if command -v pyenv 1>/dev/null 2>&1; then' >>~/.bashrc
-  echo '  eval "$(pyenv init -)"' >>~/.bashrc
-  echo 'fi' >>~/.bashrc
-fi
-sleep 1
+#   echo '# pyenv setting. written by setup.sh' >>~/.bashrc
+#   echo 'export PYENV_ROOT="$HOME/.pyenv"' >>~/.bashrc
+#   echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >>~/.bashrc
+#   echo 'if command -v pyenv 1>/dev/null 2>&1; then' >>~/.bashrc
+#   echo '  eval "$(pyenv init -)"' >>~/.bashrc
+#   echo 'fi' >>~/.bashrc
+# fi
+# sleep 1
 
 print_note 'Install pip'
 if type "pip" >/dev/null 2>&1; then

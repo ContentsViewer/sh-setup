@@ -44,7 +44,6 @@ At same time, add the `tmux.conf` by which you can use
 ### htop
 ### fzf
 ### python-dev
-### pyenv
 ### pip
 ### pipenv
 ### zsh
