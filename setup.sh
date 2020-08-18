@@ -7,7 +7,7 @@ type Command >/dev/null 2>&1 && type getconf >/dev/null 2>&1 &&
   export PATH="$(command -p getconf PATH)${PATH+:}${PATH-}"
 export UNIX_STD=2003 # to make HP-UX conform to POSIX
 
-VERSION='2020.07.16'
+VERSION='2020.08.18'
 
 usage="
 Usage: ${0##*/} [options]
@@ -149,7 +149,7 @@ sleep 1
 # === Install fzf ====================================================
 print_note 'Install fzf'
 if type "fzf" >/dev/null 2>&1; then
-  print_warning 'fzf is already installed.'
+  print_note 'fzf is already installed.'
 else
   git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf
   ${HOME}/.fzf/install
@@ -173,9 +173,24 @@ sudo apt install python3-dev
 sudo apt install python-dev
 sleep 1
 
+print_note 'Install pyenv'
+if type "pyenv" >/dev/null 2>&1; then
+  print_note 'pyenv is already installed.'
+else
+  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+
+  echo '# pyenv setting. written by setup.sh' >>~/.bashrc
+  echo 'export PYENV_ROOT="$HOME/.pyenv"' >>~/.bashrc
+  echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >>~/.bashrc
+  echo 'if command -v pyenv 1>/dev/null 2>&1; then' >>~/.bashrc
+  echo '  eval "$(pyenv init -)"' >>~/.bashrc
+  echo 'fi' >>~/.bashrc
+fi
+sleep 1
+
 print_note 'Install pip'
 if type "pip" >/dev/null 2>&1; then
-  print_warning 'pip is already installed.'
+  print_note 'pip is already installed.'
 else
   echo "add path'${HOME}/.local/bin' to PATH"
   echo 'export PATH=${HOME}/.local/bin:$PATH' >>${HOME}/.bashrc
@@ -249,4 +264,4 @@ sudo apt update
 sudo apt upgrade
 
 print_note 'All process done!'
-print_note 'Please restart shell environment.'
+print_warning 'Please restart shell environment.'
